@@ -1,0 +1,77 @@
+.card {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+  text-align: center;
+}
+
+.header {
+  margin-bottom: var(--spacing-md);
+}
+
+.city {
+  font-size: var(--font-xl);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.icon {
+  display: block;
+}
+
+.temperature {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.description {
+  font-size: var(--font-lg);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-lg);
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.detailLabel {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.detailValue {
+  font-size: var(--font-md);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: var(--spacing-lg);
+  }
+}
