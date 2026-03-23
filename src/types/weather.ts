@@ -24,6 +24,16 @@ export interface WeatherState {
   error: string | null;
 }
 
+export type SearchHistoryAction =
+  | { type: 'ADD'; payload: { city: string } }
+  | { type: 'REMOVE'; payload: { id: string } }
+  | { type: 'UNDO_REMOVE' };
+
+export interface SearchHistoryState {
+  items: SearchHistoryItem[];
+  lastRemoved: SearchHistoryItem | null;
+}
+
 export interface OpenWeatherMapResponse {
   name: string;
   sys: { country: string };

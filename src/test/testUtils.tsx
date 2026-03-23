@@ -1,8 +1,9 @@
 import { render, type RenderOptions } from '@testing-library/react';
 import { type ReactElement } from 'react';
+import { SearchHistoryProvider } from '../context/SearchHistoryContext';
 
 function AllProviders({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <SearchHistoryProvider>{children}</SearchHistoryProvider>;
 }
 
 function customRender(
