@@ -1,11 +1,59 @@
 .app {
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
   padding: var(--spacing-lg);
 }
 
-.title {
+.header {
   text-align: center;
   margin-bottom: var(--spacing-lg);
+}
+
+.title {
   color: var(--color-primary);
+  font-size: var(--font-2xl);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.main {
+  flex: 1;
+}
+
+.sidebar {
+  flex-shrink: 0;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.welcomeText {
+  color: var(--color-text-secondary);
+  font-size: var(--font-lg);
+}
+
+@media (min-width: 768px) {
+  .content {
+    flex-direction: row;
+  }
+
+  .main {
+    flex: 2;
+  }
+
+  .sidebar {
+    flex: 1;
+  }
 }

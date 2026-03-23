@@ -1,5 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
+import { SearchHistoryProvider } from './context/SearchHistoryContext';
 import { App } from './App';
 import './index.css';
 
@@ -11,6 +13,10 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App />
+    <ErrorBoundary>
+      <SearchHistoryProvider>
+        <App />
+      </SearchHistoryProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
