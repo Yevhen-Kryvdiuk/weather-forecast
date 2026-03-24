@@ -27,7 +27,8 @@ export interface WeatherState {
 export type SearchHistoryAction =
   | { type: 'ADD'; payload: { city: string } }
   | { type: 'REMOVE'; payload: { id: string } }
-  | { type: 'UNDO_REMOVE' };
+  | { type: 'UNDO_REMOVE' }
+  | { type: 'DISMISS_UNDO' };
 
 export interface SearchHistoryState {
   items: SearchHistoryItem[];

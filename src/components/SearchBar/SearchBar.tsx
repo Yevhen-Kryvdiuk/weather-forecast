@@ -36,6 +36,7 @@ function SearchBar({ onSearch, isLoading }: SearchBarProps) {
         <Button
           type="submit"
           disabled={query.trim() === '' || isLoading}
+          className={styles.searchButton}
         >
           {isLoading ? 'Searching...' : 'Search'}
         </Button>

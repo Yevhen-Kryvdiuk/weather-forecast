@@ -20,7 +20,9 @@ const mockData: WeatherData = {
 describe('WeatherCard', () => {
   it('renders city and country', () => {
     render(<WeatherCard data={mockData} />);
-    expect(screen.getByRole('heading', { name: /london, gb/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /london, gb/i }),
+    ).toBeInTheDocument();
   });
 
   it('renders temperature rounded to integer', () => {
@@ -48,9 +50,10 @@ describe('WeatherCard', () => {
     expect(screen.getByText('72%')).toBeInTheDocument();
   });
 
-  it('renders weather icon', () => {
+  it('renders weather icon with description', () => {
     render(<WeatherCard data={mockData} />);
-    const img = screen.getByRole('img', { name: /overcast clouds/i });
-    expect(img).toHaveAttribute('src', 'https://openweathermap.org/img/wn/04d@2x.png');
+    expect(
+      screen.getByRole('img', { name: /overcast clouds/i }),
+    ).toBeInTheDocument();
   });
 });

@@ -5,7 +5,9 @@ import { Button } from './Button';
 describe('Button', () => {
   it('renders children', () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole('button', { name: /click me/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /click me/i }),
+    ).toBeInTheDocument();
   });
 
   it('calls onClick when clicked', async () => {
@@ -18,7 +20,11 @@ describe('Button', () => {
 
   it('does not call onClick when disabled', async () => {
     const handleClick = vi.fn();
-    render(<Button onClick={handleClick} disabled>Click</Button>);
+    render(
+      <Button onClick={handleClick} disabled>
+        Click
+      </Button>,
+    );
 
     await userEvent.click(screen.getByRole('button'));
     expect(handleClick).not.toHaveBeenCalled();
@@ -26,6 +32,8 @@ describe('Button', () => {
 
   it('applies aria-label', () => {
     render(<Button ariaLabel="Search weather">Go</Button>);
-    expect(screen.getByRole('button', { name: 'Search weather' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Search weather' }),
+    ).toBeInTheDocument();
   });
 });

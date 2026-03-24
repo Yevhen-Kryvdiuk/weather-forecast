@@ -76,4 +76,14 @@ describe('searchHistoryReducer', () => {
     const result = searchHistoryReducer(emptyState, { type: 'UNDO_REMOVE' });
     expect(result).toBe(emptyState);
   });
+
+  it('DISMISS_UNDO — clears lastRemoved without restoring', () => {
+    const state: SearchHistoryState = {
+      items: [{ id: '2', city: 'Paris', searchedAt: 50 }],
+      lastRemoved: { id: '1', city: 'London', searchedAt: 100 },
+    };
+    const result = searchHistoryReducer(state, { type: 'DISMISS_UNDO' });
+    expect(result.items).toHaveLength(1);
+    expect(result.lastRemoved).toBeNull();
+  });
 });

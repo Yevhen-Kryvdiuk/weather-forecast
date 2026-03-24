@@ -38,6 +38,10 @@
   color: var(--color-text-secondary);
 }
 
+.searchButton {
+  min-width: 10rem;
+}
+
 @media (max-width: 480px) {
   .inputGroup {
     flex-direction: column;

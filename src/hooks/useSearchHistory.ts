@@ -24,12 +24,17 @@ function useSearchHistory() {
     dispatch({ type: 'UNDO_REMOVE' });
   };
 
+  const dismissUndo = () => {
+    dispatch({ type: 'DISMISS_UNDO' });
+  };
+
   return {
     items: state.items,
     lastRemoved: state.lastRemoved,
     addCity,
     removeCity,
     undoRemove,
+    dismissUndo,
   };
 }
 

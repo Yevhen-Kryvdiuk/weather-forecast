@@ -1,7 +1,18 @@
 import axios, { AxiosError } from 'axios';
-import { API_BASE_URL, API_KEY, UNITS } from '../constants/api';
+import { API_BASE_URL, API_KEY, UNITS, CACHE_TTL } from '../constants/api';
 import { ERROR_MESSAGES } from '../constants/messages';
 import type { OpenWeatherMapResponse, WeatherData } from '../types/weather';
+
+interface CacheEntry {
+  data: WeatherData;
+  timestamp: number;
+}
+
+const cache = new Map<string, CacheEntry>();
+
+export function clearWeatherCache(): void {
+  cache.clear();
+}
 
 const weatherClient = axios.create({
   baseURL: API_BASE_URL,
@@ -48,6 +59,13 @@ export async function fetchWeatherByCity(
   city: string,
   signal?: AbortSignal,
 ): Promise<WeatherData> {
+  const cacheKey = city.toLowerCase().trim();
+  const cached = cache.get(cacheKey);
+
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.data;
+  }
+
   try {
     const response = await weatherClient.get<OpenWeatherMapResponse>(
       '/weather',
@@ -57,7 +75,9 @@ export async function fetchWeatherByCity(
       },
     );
 
-    return mapResponseToWeatherData(response.data);
+    const data = mapResponseToWeatherData(response.data);
+    cache.set(cacheKey, { data, timestamp: Date.now() });
+    return data;
   } catch (error) {
     if (axios.isCancel(error)) {
       throw error;

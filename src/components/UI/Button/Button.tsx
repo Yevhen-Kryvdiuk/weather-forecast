@@ -9,6 +9,7 @@ interface ButtonProps {
   disabled?: boolean;
   ariaLabel?: string;
   type?: 'button' | 'submit' | 'reset';
+  className?: string;
 }
 
 function Button({
@@ -18,10 +19,15 @@ function Button({
   disabled = false,
   ariaLabel,
   type = 'button',
+  className,
 }: ButtonProps) {
+  const classes = [styles.button, styles[variant], className]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <button
-      className={`${styles.button} ${styles[variant]}`}
+      className={classes}
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}

@@ -16,7 +16,9 @@ describe('ErrorMessage', () => {
 
   it('renders retry button when onRetry is provided', () => {
     render(<ErrorMessage message="Error" onRetry={() => {}} />);
-    expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /try again/i }),
+    ).toBeInTheDocument();
   });
 
   it('calls onRetry when retry button is clicked', async () => {

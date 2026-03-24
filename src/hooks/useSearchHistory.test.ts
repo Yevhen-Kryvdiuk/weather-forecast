@@ -54,6 +54,20 @@ describe('useSearchHistory', () => {
     expect(result.current.lastRemoved).toBeNull();
   });
 
+  it('dismisses undo without restoring', () => {
+    const { result } = renderUseSearchHistory();
+
+    act(() => result.current.addCity('London'));
+    const id = result.current.items[0]?.id ?? '';
+
+    act(() => result.current.removeCity(id));
+    expect(result.current.lastRemoved?.city).toBe('London');
+
+    act(() => result.current.dismissUndo());
+    expect(result.current.lastRemoved).toBeNull();
+    expect(result.current.items).toHaveLength(0);
+  });
+
   it('throws when used outside provider', () => {
     expect(() => {
       renderHook(() => useSearchHistory());

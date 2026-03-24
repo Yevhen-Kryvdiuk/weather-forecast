@@ -11,7 +11,7 @@ import styles from './App.module.css';
 
 function App() {
   const { weather, isLoading, error, searchCity } = useWeather();
-  const { lastRemoved, addCity, undoRemove } = useSearchHistory();
+  const { lastRemoved, addCity, undoRemove, dismissUndo } = useSearchHistory();
   const lastCityRef = useRef('');
 
   const handleSearch = useCallback(
@@ -28,10 +28,6 @@ function App() {
       void handleSearch(lastCityRef.current);
     }
   }, [handleSearch]);
-
-  const handleDismissUndo = useCallback(() => {
-    // lastRemoved is cleared on next action; dismiss is a no-op visually
-  }, []);
 
   return (
     <div className={styles.app}>
@@ -64,7 +60,7 @@ function App() {
         <UndoNotification
           message={`"${lastRemoved.city}" removed from history`}
           onUndo={undoRemove}
-          onDismiss={handleDismissUndo}
+          onDismiss={dismissUndo}
         />
       )}
     </div>

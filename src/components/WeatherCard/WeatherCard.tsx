@@ -1,4 +1,5 @@
 import type { WeatherData } from '../../types/weather';
+import { WeatherIcon } from '../UI/WeatherIcon/WeatherIcon';
 import styles from './WeatherCard.module.css';
 
 interface WeatherCardProps {
@@ -10,8 +11,6 @@ function capitalize(str: string): string {
 }
 
 function WeatherCard({ data }: WeatherCardProps) {
-  const iconUrl = `https://openweathermap.org/img/wn/${data.icon}@2x.png`;
-
   return (
     <article className={styles.card}>
       <header className={styles.header}>
@@ -21,13 +20,7 @@ function WeatherCard({ data }: WeatherCardProps) {
       </header>
 
       <div className={styles.main}>
-        <img
-          className={styles.icon}
-          src={iconUrl}
-          alt={data.description}
-          width={80}
-          height={80}
-        />
+        <WeatherIcon code={data.icon} description={data.description} />
         <p className={styles.temperature}>{Math.round(data.temperature)}°C</p>
         <p className={styles.description}>{capitalize(data.description)}</p>
       </div>

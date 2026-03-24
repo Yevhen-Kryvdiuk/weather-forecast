@@ -13,7 +13,10 @@ describe('SearchBar', () => {
     const handleSearch = vi.fn();
     render(<SearchBar onSearch={handleSearch} isLoading={false} />);
 
-    await userEvent.type(screen.getByPlaceholderText(/enter city name/i), '  London  ');
+    await userEvent.type(
+      screen.getByPlaceholderText(/enter city name/i),
+      '  London  ',
+    );
     await userEvent.click(screen.getByRole('button', { name: /search/i }));
 
     expect(handleSearch).toHaveBeenCalledWith('London');
@@ -46,7 +49,10 @@ describe('SearchBar', () => {
     const handleSearch = vi.fn();
     render(<SearchBar onSearch={handleSearch} isLoading={false} />);
 
-    await userEvent.type(screen.getByPlaceholderText(/enter city name/i), 'Berlin{Enter}');
+    await userEvent.type(
+      screen.getByPlaceholderText(/enter city name/i),
+      'Berlin{Enter}',
+    );
     expect(handleSearch).toHaveBeenCalledWith('Berlin');
   });
 });

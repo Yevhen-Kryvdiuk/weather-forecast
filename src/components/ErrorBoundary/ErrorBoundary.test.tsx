@@ -27,9 +27,7 @@ describe('ErrorBoundary', () => {
 
     expect(screen.getByRole('alert')).toBeInTheDocument();
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /reload/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /reload/i })).toBeInTheDocument();
 
     vi.restoreAllMocks();
   });

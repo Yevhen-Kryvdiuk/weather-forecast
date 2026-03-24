@@ -1,13 +1,25 @@
-import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  afterEach,
+  vi,
+} from 'vitest';
 import { setupServer } from 'msw/node';
+import { http, HttpResponse } from 'msw';
 import { handlers, mockWeatherResponse } from '../test/handlers';
-import { fetchWeatherByCity } from './weatherApi';
+import { fetchWeatherByCity, clearWeatherCache } from './weatherApi';
 import { ERROR_MESSAGES } from '../constants/messages';
 
 const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  clearWeatherCache();
+});
 afterAll(() => server.close());
 
 describe('fetchWeatherByCity', () => {
@@ -60,5 +72,101 @@ describe('fetchWeatherByCity', () => {
     await expect(
       fetchWeatherByCity('London', controller.signal),
     ).rejects.toThrow();
+  });
+});
+
+describe('caching', () => {
+  it('returns cached data on repeated request within TTL', async () => {
+    let callCount = 0;
+    server.use(
+      http.get('https://api.openweathermap.org/data/2.5/weather', () => {
+        callCount++;
+        return HttpResponse.json(mockWeatherResponse);
+      }),
+    );
+
+    await fetchWeatherByCity('CacheCity');
+    await fetchWeatherByCity('CacheCity');
+
+    expect(callCount).toBe(1);
+  });
+
+  it('cache key is case-insensitive', async () => {
+    let callCount = 0;
+    server.use(
+      http.get('https://api.openweathermap.org/data/2.5/weather', () => {
+        callCount++;
+        return HttpResponse.json(mockWeatherResponse);
+      }),
+    );
+
+    await fetchWeatherByCity('Berlin');
+    await fetchWeatherByCity('berlin');
+
+    expect(callCount).toBe(1);
+  });
+
+  it('different cities make separate requests', async () => {
+    let callCount = 0;
+    server.use(
+      http.get('https://api.openweathermap.org/data/2.5/weather', () => {
+        callCount++;
+        return HttpResponse.json(mockWeatherResponse);
+      }),
+    );
+
+    await fetchWeatherByCity('Paris');
+    await fetchWeatherByCity('Rome');
+
+    expect(callCount).toBe(2);
+  });
+
+  it('does not cache errors', async () => {
+    await expect(fetchWeatherByCity('NotFoundCity')).rejects.toThrow();
+
+    let callCount = 0;
+    server.use(
+      http.get('https://api.openweathermap.org/data/2.5/weather', () => {
+        callCount++;
+        return HttpResponse.json(mockWeatherResponse);
+      }),
+    );
+
+    await fetchWeatherByCity('NotFoundCity');
+    expect(callCount).toBe(1);
+  });
+
+  it('refetches after TTL expires', async () => {
+    let callCount = 0;
+    server.use(
+      http.get('https://api.openweathermap.org/data/2.5/weather', () => {
+        callCount++;
+        return HttpResponse.json(mockWeatherResponse);
+      }),
+    );
+
+    await fetchWeatherByCity('ExpireCity');
+
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 6 * 60 * 1000);
+    await fetchWeatherByCity('ExpireCity');
+
+    expect(callCount).toBe(2);
+    vi.restoreAllMocks();
+  });
+
+  it('clearWeatherCache forces new request', async () => {
+    let callCount = 0;
+    server.use(
+      http.get('https://api.openweathermap.org/data/2.5/weather', () => {
+        callCount++;
+        return HttpResponse.json(mockWeatherResponse);
+      }),
+    );
+
+    await fetchWeatherByCity('ClearCity');
+    clearWeatherCache();
+    await fetchWeatherByCity('ClearCity');
+
+    expect(callCount).toBe(2);
   });
 });

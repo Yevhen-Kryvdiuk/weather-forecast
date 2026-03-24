@@ -28,9 +28,7 @@ function searchHistoryReducer(
       };
     }
     case 'REMOVE': {
-      const removed = state.items.find(
-        (item) => item.id === action.payload.id,
-      );
+      const removed = state.items.find((item) => item.id === action.payload.id);
       return {
         items: state.items.filter((item) => item.id !== action.payload.id),
         lastRemoved: removed ?? null,
@@ -49,6 +47,9 @@ function searchHistoryReducer(
         items.splice(insertIndex, 0, restored);
       }
       return { items, lastRemoved: null };
+    }
+    case 'DISMISS_UNDO': {
+      return { ...state, lastRemoved: null };
     }
   }
 }

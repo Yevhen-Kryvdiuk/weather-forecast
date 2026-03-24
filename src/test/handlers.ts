@@ -30,10 +30,7 @@ export const handlers = [
     const city = url.searchParams.get('q');
 
     if (city === 'NotFoundCity') {
-      return HttpResponse.json(
-        { message: 'city not found' },
-        { status: 404 },
-      );
+      return HttpResponse.json({ message: 'city not found' }, { status: 404 });
     }
 
     if (city === 'RateLimitCity') {
@@ -44,10 +41,7 @@ export const handlers = [
     }
 
     if (city === 'ServerErrorCity') {
-      return HttpResponse.json(
-        { message: 'internal error' },
-        { status: 500 },
-      );
+      return HttpResponse.json({ message: 'internal error' }, { status: 500 });
     }
 
     if (city === 'NetworkErrorCity') {
