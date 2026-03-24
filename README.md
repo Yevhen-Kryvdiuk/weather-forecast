@@ -1,5 +1,7 @@
 # Weather Forecast
 
+![Weather Forecast App](docs/preview.png)
+
 Search weather by city. Shows temperature, wind, humidity, animated icons. Keeps search history in localStorage with undo on delete.
 
 ## Setup
